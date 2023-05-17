@@ -1,12 +1,17 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@iconify-json/material-symbols': ^1.1.42
   '@tsconfig/node18': ^2.0.1
+  '@types/lodash': ^4.14.194
   '@types/node': ^18.16.8
   '@vitejs/plugin-vue': ^4.2.3
   '@vue/tsconfig': ^0.4.0
+  '@vueuse/core': ^10.1.2
+  lodash: ^4.17.21
   nanoid: ^4.0.2
   npm-run-all: ^4.1.5
+  pattern.css: ^1.0.0
   pinia: ^2.0.36
   sass: ^1.62.1
   typescript: ~5.0.4
@@ -17,13 +22,18 @@ specifiers:
   vue-tsc: ^1.6.4
 
 dependencies:
+  '@vueuse/core': 10.1.2_vue@3.3.2
+  lodash: 4.17.21
   nanoid: 4.0.2
+  pattern.css: 1.0.0
   pinia: 2.0.36_typescript@5.0.4+vue@3.3.2
   vue: 3.3.2
   vue-router: 4.2.0_vue@3.3.2
 
 devDependencies:
+  '@iconify-json/material-symbols': 1.1.42
   '@tsconfig/node18': 2.0.1
+  '@types/lodash': 4.14.194
   '@types/node': 18.16.10
   '@vitejs/plugin-vue': 4.2.3_vite@4.3.6+vue@3.3.2
   '@vue/tsconfig': 0.4.0
@@ -280,6 +290,12 @@ packages:
     dev: true
     optional: true
 
+  /@iconify-json/material-symbols/1.1.42:
+    resolution: {integrity: sha512-GVCi+035oCXCjpzTzjBx/Qgnsv4B2iJcLQCRqhNuY/Le9BmvHVg2+dHGMWc6iBgspjWu11SzRnz4wfs3XJGp1w==}
+    dependencies:
+      '@iconify/types': 2.0.0
+    dev: true
+
   /@iconify/types/2.0.0:
     resolution: {integrity: sha512-+wluvCrRhXrhyOmRDJ3q8mux9JkKy5SJ/v8ol2tu4FVjyYvtEzkc/3pK15ET6RKg4b4w4BmTk1+gsCUhf21Ykg==}
     dev: true
@@ -377,9 +393,17 @@ packages:
     resolution: {integrity: sha512-LG4opVs2ANWZ1TJoKc937iMmNstM/d0ae1vNbnBvBhqCSezgVUOzcLCqbI5elV8Vy6WKwKjaqR+zO9VKirBBCA==}
     dev: true
 
+  /@types/lodash/4.14.194:
+    resolution: {integrity: sha512-r22s9tAS7imvBt2lyHC9B8AGwWnXaYb1tY09oyLkXDs4vArpYJzw09nj8MLx5VfciBPGIb+ZwG0ssYnEPJxn/g==}
+    dev: true
+
   /@types/node/18.16.10:
     resolution: {integrity: sha512-sMo3EngB6QkMBlB9rBe1lFdKSLqljyWPPWv6/FzSxh/IDlyVWSzE9RiF4eAuerQHybrWdqBgAGb03PM89qOasA==}
     dev: true
+
+  /@types/web-bluetooth/0.0.17:
+    resolution: {integrity: sha512-4p9vcSmxAayx72yn70joFoL44c9MO/0+iVEBIQXe3v2h2SiAsEIo/G5v6ObFWvNKRFjbrVadNf9LqEEZeQPzdA==}
+    dev: false
 
   /@unocss/astro/0.51.13_vite@4.3.6:
     resolution: {integrity: sha512-Dul0ZJNwseGBxngBMfghfTsf0quf4HcQcqJuIDzA1T+ueavpwf4QScwbDuS0BqFO4ZiIVSItA7f6eLe31PHUmw==}
@@ -704,6 +728,31 @@ packages:
   /@vue/tsconfig/0.4.0:
     resolution: {integrity: sha512-CPuIReonid9+zOG/CGTT05FXrPYATEqoDGNrEaqS4hwcw5BUNM2FguC0mOwJD4Jr16UpRVl9N0pY3P+srIbqmg==}
     dev: true
+
+  /@vueuse/core/10.1.2_vue@3.3.2:
+    resolution: {integrity: sha512-roNn8WuerI56A5uiTyF/TEYX0Y+VKlhZAF94unUfdhbDUI+NfwQMn4FUnUscIRUhv3344qvAghopU4bzLPNFlA==}
+    dependencies:
+      '@types/web-bluetooth': 0.0.17
+      '@vueuse/metadata': 10.1.2
+      '@vueuse/shared': 10.1.2_vue@3.3.2
+      vue-demi: 0.14.1_vue@3.3.2
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
+
+  /@vueuse/metadata/10.1.2:
+    resolution: {integrity: sha512-3mc5BqN9aU2SqBeBuWE7ne4OtXHoHKggNgxZR2K+zIW4YLsy6xoZ4/9vErQs6tvoKDX6QAqm3lvsrv0mczAwIQ==}
+    dev: false
+
+  /@vueuse/shared/10.1.2_vue@3.3.2:
+    resolution: {integrity: sha512-1uoUTPBlgyscK9v6ScGeVYDDzlPSFXBlxuK7SfrDGyUTBiznb3mNceqhwvZHjtDRELZEN79V5uWPTF1VDV8svA==}
+    dependencies:
+      vue-demi: 0.14.1_vue@3.3.2
+    transitivePeerDependencies:
+      - '@vue/composition-api'
+      - vue
+    dev: false
 
   /ansi-styles/3.2.1:
     resolution: {integrity: sha512-VT0ZI6kZRdTh8YyJw3SMbYm/u+NqfsAxEpWO0Pf9sq8/e94WxxOpPKx9FR1FlyCtOVDNOQ+8ntlqFxiRc+r5qA==}
@@ -1355,6 +1404,10 @@ packages:
       p-locate: 5.0.0
     dev: true
 
+  /lodash/4.17.21:
+    resolution: {integrity: sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg==}
+    dev: false
+
   /lru-cache/6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -1566,6 +1619,10 @@ packages:
   /pathe/1.1.0:
     resolution: {integrity: sha512-ODbEPR0KKHqECXW1GoxdDb+AZvULmXjVPy4rt+pGo2+TnjJTIPJQSVS6N63n8T2Ip+syHhbn52OewKicV0373w==}
     dev: true
+
+  /pattern.css/1.0.0:
+    resolution: {integrity: sha512-2bW2rCCdLGgvJPpiSJGrg44onxRWTMQpn6tooAayomsCHiso3nehlp5OugNYHSXxYuFfQ1vtDXtGbq6H206qLw==}
+    dev: false
 
   /perfect-debounce/1.0.0:
     resolution: {integrity: sha512-xCy9V055GLEqoFaHoC1SoLIaLmWctgCUaBaWxDZ7/Zx4CTyX7cJQLJOok/orfjZAh9kEYpjJa4d0KcJmCbctZA==}
