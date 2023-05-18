@@ -20,3 +20,18 @@
 第三次猜测：5690 提示：1A1B  
 第四次猜测：5634 提示：2A2B  
 第五次猜测：3654 提示：4A0B（胜利）
+
+### 如何出题考考你的朋友？
+
+也许你会想自己定一个答案给你的朋友们玩，很简单，步骤如下：
+
+1. 打开这个[网站](https://tools.fun/base64.html)
+2. 然后，这样做：
+   ![method](./assets/Snipaste_2023-05-18_15-21-48.png)
+3. 把网站的链接复制下来，把它改成以下格式：
+
+```
+网站链接?answer=你复制的内容
+```
+
+例如，网站链接是 https://visionary-biscotti-988b7b.netlify.app/works/guess_numbers ，你复制的内容是 MTIzNA== ，最后你应该发给你朋友的链接是 https://visionary-biscotti-988b7b.netlify.app/works/guess_numbers?answer=MTIzNA==

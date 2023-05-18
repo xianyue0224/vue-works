@@ -43,7 +43,6 @@
     <span class="cursor-default"
       >When you have entered 4 numbers, you can click "Enter" to check.</span
     >
-    {{ store.answer }}
   </div>
 
   <input
