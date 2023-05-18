@@ -1,9 +1,12 @@
-import { ref, computed } from 'vue';
+import { ref, computed, watchEffect } from 'vue';
 import { defineStore } from 'pinia';
 import _ from 'lodash';
 import { nanoid } from 'nanoid';
 import type { Hint } from './types';
+import confetti from 'canvas-confetti';
+import { useRoute } from 'vue-router';
 
+// 生成答案
 function genAnswer(): string {
   const nums: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
   const result: number[] = [];
@@ -14,6 +17,7 @@ function genAnswer(): string {
   return result.join('');
 }
 
+// 生成提示
 function genHint(input: string, answer: string): Hint {
   let a = 0,
     b = 0;
@@ -29,6 +33,26 @@ function genHint(input: string, answer: string): Hint {
     A: a,
     B: b,
   };
+}
+
+// 胜利时庆祝的礼花效果
+function wonEffect() {
+  function randomInRange(min: number, max: number) {
+    return Math.random() * (max - min) + min;
+  }
+
+  const timer = setInterval(() => {
+    confetti({
+      angle: randomInRange(55, 125),
+      spread: randomInRange(50, 70),
+      particleCount: randomInRange(100, 200),
+      origin: { y: 0.6 },
+    });
+  }, 800);
+
+  setTimeout(() => {
+    clearInterval(timer);
+  }, 3000);
 }
 
 export const use_GN_Store = defineStore('guess_numbers', () => {
@@ -74,8 +98,23 @@ export const use_GN_Store = defineStore('guess_numbers', () => {
     () => history.value.length === 8 && history.value.at(-1)?.A !== 4
   );
 
+  watchEffect(() => {
+    if (won.value) {
+      wonEffect();
+    }
+  });
+
   function initAnswer() {
-    answer.value = genAnswer();
+    const defineAnswer = window.history.state.current
+      .split('?')[1]
+      ?.split('=')[1];
+    if (defineAnswer) {
+      answer.value = atob(defineAnswer);
+    } else {
+      answer.value = genAnswer();
+    }
+
+    console.log(answer.value);
   }
 
   function finishGame() {
