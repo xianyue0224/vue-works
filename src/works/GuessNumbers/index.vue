@@ -58,6 +58,8 @@ import InputBox from './InputBox.vue';
 import HistoryItem from './HistoryItem.vue';
 import { use_GN_Store } from './store';
 
+defineOptions({ name: 'GuessNumbers' });
+
 const store = use_GN_Store();
 
 function startGame() {

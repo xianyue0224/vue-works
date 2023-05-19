@@ -12,7 +12,17 @@ const router = createRouter({
     {
       path: '/works/guess_numbers',
       name: 'guess_numbers',
-      component: () => import('../works/GuessNumbers/GuessNumbersView.vue'),
+      component: () => import('../works/GuessNumbers/index.vue'),
+    },
+    {
+      path: '/works/schult_table',
+      name: 'schult_table',
+      component: () => import('../works/SchultTable/index.vue'),
+    },
+    {
+      path: '/works/calendar_puzzle',
+      name: 'calendar_puzzle',
+      component: () => import('../works/CalendarPuzzle/index.vue'),
     },
   ],
 });

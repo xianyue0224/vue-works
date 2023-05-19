@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue';
-import { nanoid } from '@/utils';
+import { nanoid } from 'nanoid';
 
 interface Item {
   id: string;
@@ -29,6 +29,7 @@ const items = ref<Item[]>(
   [
     { route_name: 'guess_numbers', title: '猜数字' },
     { route_name: 'schult_table', title: '舒尔特表格' },
+    { route_name: 'calendar_puzzle', title: '日历拼图' },
   ].map(item => {
     //@ts-expect-error
     item.id = nanoid();

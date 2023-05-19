@@ -4,7 +4,6 @@ import _ from 'lodash';
 import { nanoid } from 'nanoid';
 import type { Hint } from './types';
 import confetti from 'canvas-confetti';
-import { useRoute } from 'vue-router';
 
 // 生成答案
 function genAnswer(): string {
