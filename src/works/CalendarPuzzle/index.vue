@@ -1,6 +1,22 @@
-<template>日历拼图</template>
+<template>
+  <div
+    class="relative w-100% h-100% pattern-grid-sm flex gap-5 items-center bg-gray justify-center overflow-hidden"
+  >
+    <LeftPanel />
+    <RightPanel />
+
+    <PickingBlock v-if="store.blockPicking" :block="store.blockPicking" />
+  </div>
+</template>
 
 <script setup lang="ts">
+import RightPanel from './RightPanel.vue';
+import LeftPanel from './LeftPanel.vue';
+import PickingBlock from './PickingBlock.vue';
+import { use_CP_Store } from './store';
+
+const store = use_CP_Store();
+
 defineOptions({ name: 'CalendarPuzzle' });
 </script>
 
