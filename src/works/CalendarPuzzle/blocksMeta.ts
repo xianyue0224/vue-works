@@ -38,7 +38,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#ff5c60',
+    color: '#00da9d',
   },
   {
     // 6字形块
@@ -80,7 +80,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#fcf582',
+    color: '#ff5a3c',
   },
   {
     // 长L型块
@@ -122,7 +122,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#ed5a6a',
+    color: '#2b67f5',
   },
   {
     // 正方形块
@@ -136,7 +136,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#ffbb73',
+    color: '#76fcfc',
   },
   {
     // 短T型块
@@ -162,7 +162,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#6ec7fc',
+    color: '#ffc952',
   },
   {
     // 大直角块
@@ -214,7 +214,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#bb7ff3',
+    color: '#c2fa92',
   },
   {
     // 凹型块
@@ -282,7 +282,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#c2fa92',
+    color: '#fa3877',
   },
   {
     // 一型块
@@ -342,7 +342,7 @@ export const blocksMeta: Block[] = [
       },
     ],
     currentForm: 0,
-    color: '#2fce6f',
+    color: '#eb9f9f',
   },
 ].map(block => {
   block.forms = block.forms.map(form => {

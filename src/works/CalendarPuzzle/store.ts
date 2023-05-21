@@ -3,80 +3,133 @@ import { computed, ref, watchEffect } from 'vue';
 import { gridsMeta } from './rightPanelGridsMata';
 import { blocksMeta } from './blocksMeta';
 import type { Block, Grid } from './types';
-import { getNeighborhood, getOverlapPercentage } from './utils';
+import { getSubArray } from './utils';
+import { useMouse } from '@vueuse/core';
 
 export const use_CP_Store = defineStore('calendar_puzzle', () => {
+  // 所有拼图块
+  const blocks = ref<Block[]>(blocksMeta);
+
   // 左边盘里备用的拼图块
-  const blocksInLeft = ref<Block[]>(blocksMeta);
+  const blocksInLeft = computed(() =>
+    blocks.value.filter(block => block.states === 1)
+  );
 
   // 抓在手里的拼图块
-  const blockPicking = computed(() => {
-    return blocksInLeft.value.find(block => {
-      return block.states === 2;
-    });
-  });
+  const blockPicking = computed(() =>
+    blocks.value.find(block => block.states === 2)
+  );
+
+  const { x: mouseX, y: mouseY } = useMouse();
 
   // 右边盘里的格子
-  const gridsInRight = ref<Grid[]>(gridsMeta());
+  const grids = ref<Grid[]>(gridsMeta());
 
-  // 以鼠标悬停的格子为中心的5*5范围内的格子
-  const grids55 = computed(() => {
-    const centerGridIdx = gridsInRight.value.findIndex(grid => grid.hover);
-    if (centerGridIdx === -1) return;
+  // 拼图块落下的位置
+  const gridsWillBePlaced = computed(() => {
+    if (!blockPicking.value) return;
 
-    const result = getNeighborhood(gridsInRight.value, centerGridIdx, 7, 8);
-    return result;
-  });
+    const blockRect = document
+      .querySelector('#picking_puzzle_block')
+      ?.getBoundingClientRect() as DOMRect;
 
-  // 被覆盖的格子
-  const coverGrids = computed(() => {
-    if (!grids55.value || !blockPicking.value) return;
-    const result: {
-      pickingBlockGridId: string;
-      overwrittenGrid: Grid | undefined;
-    }[] = [];
-    const currentForm =
-      blockPicking.value.forms[blockPicking.value.currentForm];
-    for (let i = 0; i < currentForm.layout.length; i++) {
-      if (currentForm.layout[i].state === 0) return;
-      const id = currentForm.layout[i].id;
-      const el1 = document.querySelector(`div[picking_block_grid_id='${id}']`);
+    // 拼图块左上角的坐标
+    const cliendX = mouseX.value - blockRect?.width / 2;
+    const cliendY = mouseY.value - blockRect.height / 2;
 
-      let maxoverlapPercentage = 0;
-      let gridResult: Grid | undefined = undefined;
-      // 从5*5范围内找出覆盖率最高的那个格子记录在gridResult中
-      for (let j = 0; j < grids55.value.length; j++) {
-        const grid = grids55.value[j];
-        const el2 = document.querySelector(`div[grid_id='${grid.id}']`);
-        const overlapPercentage = getOverlapPercentage(
-          el1 as HTMLElement,
-          el2 as HTMLElement
-        );
-        if (overlapPercentage > maxoverlapPercentage) {
-          maxoverlapPercentage = overlapPercentage;
-          gridResult = grid;
-        }
-      }
-      // 循环结束后，把覆盖率最高的那个格子加入结果数组中
-      if (maxoverlapPercentage !== 0 && gridResult) {
-        result.push({ pickingBlockGridId: id, overwrittenGrid: gridResult });
-      } else {
-        result.push({ pickingBlockGridId: id, overwrittenGrid: undefined });
-      }
+    const { left, right, top, bottom, width, height } = document
+      .querySelector('#right_pannel')
+      ?.getBoundingClientRect() as DOMRect;
+
+    // 判断拼图块的左上角是否在盘内
+    if (cliendX < left || cliendX > right || cliendY < top || cliendY > bottom)
+      return;
+
+    // 以盘子左上角为坐标原点的坐标系，拼图块的新坐标
+    const trX = cliendX - left;
+    const trY = cliendY - top;
+
+    // 拼图块左上角在盘中的坐标
+    const row = Math.floor(trY / (height / 7));
+    const col = Math.floor(trX / (width / 8));
+
+    if (row === 6 && col >= 3) return;
+
+    const curForm = blockPicking.value.forms[blockPicking.value.currentForm];
+
+    const size = [curForm.size.rows, curForm.size.cols];
+
+    const matchResult = getSubArray(
+      grids.value,
+      7,
+      8,
+      row,
+      col,
+      size as [number, number]
+    );
+
+    if (matchResult.length === 0) return;
+
+    const targetGrids: Grid[] = [];
+    for (let i = 0; i < curForm.layout.length; i++) {
+      if (curForm.layout[i].state === 0) continue;
+      const grid = matchResult[i];
+      if (grid.block_id) return [];
+      else targetGrids.push(grid);
     }
-    return result;
+
+    for (let i = 0; i < targetGrids.length; i++) {
+      //@ts-expect-error
+      if (targetGrids[i]._is_not_a_grid) return [];
+    }
+
+    return targetGrids;
   });
 
   watchEffect(() => {
-    if (coverGrids.value) {
-      for (let i = 0; i < coverGrids.value.length; i++) {
-        const overwrittenGrid = coverGrids.value[i].overwrittenGrid;
-        if (overwrittenGrid) {
-          overwrittenGrid.toPlace = true;
-        }
-      }
-    }
+    setGridAttr_toPlace(grids.value, false);
+    if (!gridsWillBePlaced.value || gridsWillBePlaced.value.length === 0)
+      return;
+
+    setGridAttr_toPlace(gridsWillBePlaced.value, true);
   });
 
-  return { gridsInRight, blocksInLeft, blockPicking, grids55, coverGrids };
+  function place() {
+    if (
+      !blockPicking.value ||
+      !gridsWillBePlaced.value ||
+      gridsWillBePlaced.value.length === 0
+    )
+      return;
+
+    // 当前拿着的那个拼图块的id
+    const id = blockPicking.value.id;
+
+    // 把将要放置拼图块的格子的block_id字段改为拼图块的id
+    gridsWillBePlaced.value.forEach(grid => {
+      grid.block_id = id;
+    });
+
+    // 从blocks中找到那个拼图块，将它的状态改为3，代表已被放置到日历盘中
+    const block = blocks.value.find(block => block.id === id);
+    if (block) {
+      block.states = 3;
+    }
+  }
+
+  return {
+    grids,
+    blocksInLeft,
+    blockPicking,
+    gridsWillBePlaced,
+    place,
+    blocks,
+  };
 });
+
+// 设置Grid的toPlace属性的值
+export function setGridAttr_toPlace(arr: Grid[], value: boolean) {
+  arr.forEach(grid => {
+    grid.toPlace = value;
+  });
+}

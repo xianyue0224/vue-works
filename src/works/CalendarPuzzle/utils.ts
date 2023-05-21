@@ -112,3 +112,41 @@ export function getNeighborhood<T>(
 
   return neighborhood;
 }
+
+export function getSubArray<T>(
+  arr: T[],
+  rows: number,
+  cols: number,
+  x: number,
+  y: number,
+  size: [number, number]
+): T[] {
+  if (x > rows - 1 || y > cols - 1) return [];
+
+  const subArray: T[] = [];
+
+  for (let i = x; i < x + size[0]; i++) {
+    for (let j = y; j < y + size[1]; j++) {
+      if (i < rows && j < cols && i * cols + j < arr.length) {
+        subArray.push(arr[i * cols + j]);
+      } else {
+        subArray.push({ _is_not_a_grid: true } as T);
+      }
+    }
+  }
+
+  return subArray;
+}
+
+export function getItemByXY<T>(
+  arr: T[],
+  rows: number,
+  cols: number,
+  x: number,
+  y: number
+) {
+  if (x < 0 || x > rows - 1 || y < 0 || y > cols - 1) return;
+  const idx = x * cols + y;
+  if (idx > arr.length - 1) return;
+  return arr[idx];
+}

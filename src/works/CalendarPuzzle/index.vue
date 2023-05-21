@@ -1,6 +1,6 @@
 <template>
   <div
-    class="relative w-100% h-100% pattern-grid-sm flex gap-5 items-center bg-gray justify-center overflow-hidden"
+    class="relative w-100% h-100% pattern-grid-lg flex gap-5 items-center bg-[#27374D] justify-center overflow-hidden"
   >
     <LeftPanel />
     <RightPanel />

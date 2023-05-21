@@ -5,11 +5,13 @@
     :class="[gridTemplateClass]"
     :block_id="block.id"
     :style="{ top, left, opacity }"
+    @mouseup="onmouseup"
   >
     <div
       v-for="grid in block.forms[block.currentForm].layout"
       class="w-100% h-100%"
       :style="{ backgroundColor: block.color, opacity: grid.state }"
+      :class="classObj"
       :key="grid.id"
       :picking_block_grid_id="grid.id"
     ></div>
@@ -17,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { Block } from './types';
 import { use_CP_Store } from './store';
 import { useMouse, onKeyStroke } from '@vueuse/core';
@@ -25,7 +27,7 @@ import { useMouse, onKeyStroke } from '@vueuse/core';
 const { block } = defineProps<{ block: Block }>();
 const store = use_CP_Store();
 
-const mouse = useMouse();
+const { x, y } = useMouse();
 
 const top = ref(0 + 'px');
 
@@ -33,18 +35,25 @@ const left = ref(0 + 'px');
 
 const opacity = ref(0);
 
-watchEffect(() => {
-  const x = mouse.x.value;
-  const y = mouse.y.value;
+function onmouseup(e: MouseEvent) {
+  if (e.button !== 0) return;
 
+  if (store.gridsWillBePlaced && store.gridsWillBePlaced.length !== 0) {
+    return store.place();
+  }
+
+  block.states = 1;
+}
+
+watch([x, y], ([xVal, yVal]) => {
   if (!store.blockPicking) return;
 
-  if (x === 0 && y === 0) return;
+  if (xVal === 0 && yVal === 0) return;
 
   opacity.value = 1;
 
-  top.value = y + 'px';
-  left.value = x + 'px';
+  top.value = yVal + 'px';
+  left.value = xVal + 'px';
 });
 
 onKeyStroke(' ', e => {
@@ -60,6 +69,10 @@ onKeyStroke(' ', e => {
 const gridTemplateClass = computed(() => {
   const idx = block.currentForm;
   return `gt${block.forms[idx].size.rows}${block.forms[idx].size.cols}`;
+});
+
+const classObj = computed(() => {
+  return {};
 });
 </script>
 

@@ -2,7 +2,6 @@
   <div
     id="puzzle_block"
     :class="[gridTemplateClass]"
-    :block_id="block.id"
     v-if="block.states === 1"
     ref="el"
   >
@@ -11,13 +10,12 @@
       class="w-100% h-100%"
       :style="{ backgroundColor: block.color, opacity: grid.state }"
       :key="grid.id"
-      @click="switchForm"
     ></div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed, ref, watchEffect } from 'vue';
+import { computed, ref, watch } from 'vue';
 import type { Block } from './types';
 import { useMousePressed } from '@vueuse/core';
 
@@ -27,29 +25,21 @@ const el = ref(null);
 
 const { pressed } = useMousePressed({ target: el });
 
-watchEffect(() => {
-  if (pressed.value) {
+watch(pressed, newVal => {
+  if (newVal) {
     block.states = 2;
-  } else {
-    if (block.states !== 3) {
-      block.states = 1;
-    }
   }
 });
+
+function onmousedown(e: MouseEvent) {
+  if (e.button !== 0) return;
+  block.states = 2;
+}
 
 const gridTemplateClass = computed(() => {
   const idx = block.currentForm;
   return `gt${block.forms[idx].size.rows}${block.forms[idx].size.cols}`;
 });
-
-function switchForm() {
-  const idx = block.currentForm;
-  if (idx + 1 === block.forms.length) {
-    block.currentForm = 0;
-  } else {
-    block.currentForm = idx + 1;
-  }
-}
 </script>
 
 <style scoped lang="scss">
