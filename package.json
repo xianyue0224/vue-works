@@ -13,6 +13,7 @@
     "@formkit/auto-animate": "1.0.0-beta.6",
     "@vueuse/core": "^10.1.2",
     "canvas-confetti": "^1.6.0",
+    "dayjs": "^1.11.7",
     "lodash": "^4.17.21",
     "nanoid": "^4.0.2",
     "pattern.css": "^1.0.0",
