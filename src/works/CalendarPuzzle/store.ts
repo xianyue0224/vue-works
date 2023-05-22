@@ -4,7 +4,9 @@ import { gridsMeta } from './rightPanelGridsMata';
 import { blocksMeta } from './blocksMeta';
 import type { Block, Grid } from './types';
 import { getSubArray } from './utils';
-import { useMouse } from '@vueuse/core';
+import { useMouse, useDateFormat, useNow } from '@vueuse/core';
+import { wonEffect } from '@/utils';
+import _ from 'lodash';
 
 export const use_CP_Store = defineStore('calendar_puzzle', () => {
   // 所有拼图块
@@ -117,6 +119,69 @@ export const use_CP_Store = defineStore('calendar_puzzle', () => {
     }
   }
 
+  const date = computed(() => {
+    const formatted = useDateFormat(useNow(), 'MM-DD-d');
+
+    const arr = formatted.value.split('-').map(Number);
+
+    const MM = [
+      '一月',
+      '二月',
+      '三月',
+      '四月',
+      '五月',
+      '六月',
+      '七月',
+      '八月',
+      '九月',
+      '十月',
+      '十一月',
+      '十二月',
+    ];
+
+    const d = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+
+    const result = [MM[arr[0] - 1], String(arr[1]), d[arr[2]]];
+
+    grids.value = grids.value.map(grid => {
+      if (result.includes(grid.label)) {
+        grid.placeable = false;
+      }
+      return grid;
+    });
+
+    return result;
+  });
+
+  function reset() {
+    blocks.value = blocks.value.map(block => {
+      block.states = 1;
+      return block;
+    });
+    grids.value = grids.value.map(grid => {
+      grid.block_id = '';
+      grid.hover = false;
+      grid.toPlace = false;
+      return grid;
+    });
+  }
+
+  const successEffect = _.once(wonEffect);
+
+  watchEffect(() => {
+    if (blocksInLeft.value.length === 0 && !blockPicking.value) {
+      let a = 0;
+      grids.value.forEach(grids => {
+        if (!grids.placeable && !grids.block_id) {
+          a++;
+        }
+      });
+      if (a === 3) {
+        successEffect();
+      }
+    }
+  });
+
   return {
     grids,
     blocksInLeft,
@@ -124,6 +189,8 @@ export const use_CP_Store = defineStore('calendar_puzzle', () => {
     gridsWillBePlaced,
     place,
     blocks,
+    date,
+    reset,
   };
 });
 

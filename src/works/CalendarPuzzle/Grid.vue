@@ -1,7 +1,7 @@
 <template>
   <div
     id="grid_item"
-    class="w-25 h-25 grid place-items-center select-none"
+    class="w-25 h-25 grid place-items-center select-none transition"
     :class="classObj"
     :style="{ '--bgc': bgc }"
     ref="el"
@@ -83,6 +83,7 @@ const classObj = computed(() => {
     rightnone: rightGrid ? match(rightGrid, grid) : false,
     topnone: topGrid ? match(topGrid, grid) : false,
     bottomnone: bottomGrid ? match(bottomGrid, grid) : false,
+    targetDate: store.date.includes(grid.label),
   };
 });
 </script>
@@ -90,6 +91,11 @@ const classObj = computed(() => {
 <style scoped lang="scss">
 #grid_item {
   background-color: #aabe9e;
+}
+
+#grid_item.targetDate {
+  color: rgb(158, 64, 64);
+  font-weight: bolder;
 }
 
 #grid_item.toPlace {

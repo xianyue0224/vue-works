@@ -3,7 +3,7 @@ import { defineStore } from 'pinia';
 import _ from 'lodash';
 import { nanoid } from 'nanoid';
 import type { Hint } from './types';
-import confetti from 'canvas-confetti';
+import { wonEffect } from '@/utils';
 
 // 生成答案
 function genAnswer(): string {
@@ -32,26 +32,6 @@ function genHint(input: string, answer: string): Hint {
     A: a,
     B: b,
   };
-}
-
-// 胜利时庆祝的礼花效果
-function wonEffect() {
-  function randomInRange(min: number, max: number) {
-    return Math.random() * (max - min) + min;
-  }
-
-  const timer = setInterval(() => {
-    confetti({
-      angle: randomInRange(55, 125),
-      spread: randomInRange(50, 70),
-      particleCount: randomInRange(100, 200),
-      origin: { y: 0.6 },
-    });
-  }, 800);
-
-  setTimeout(() => {
-    clearInterval(timer);
-  }, 3000);
 }
 
 export const use_GN_Store = defineStore('guess_numbers', () => {

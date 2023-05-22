@@ -6,6 +6,7 @@
     <RightPanel />
 
     <PickingBlock v-if="store.blockPicking" :block="store.blockPicking" />
+    <ResetButton />
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import RightPanel from './RightPanel.vue';
 import LeftPanel from './LeftPanel.vue';
 import PickingBlock from './PickingBlock.vue';
+import ResetButton from './ResetButton.vue';
 import { use_CP_Store } from './store';
 
 const store = use_CP_Store();
