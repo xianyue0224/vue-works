@@ -7,7 +7,7 @@
     <div
       class="w-100% h-100% bg-[#a79c8e] col-span-5 rounded-[1rem] rounded-bl-none rounded-tr-none overflow-hidden grid place-items-center"
     >
-      <h4 class="mx-8 text-center cursor-default">
+      <h4 class="mx-8 text-center cursor-default select-none">
         把左边的拼图块填入右边的日历中，注意别盖住了今天的日期。抓起拼图块时按下空格可以切换拼图块的方向。
       </h4>
     </div>
