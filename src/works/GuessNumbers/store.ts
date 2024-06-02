@@ -69,12 +69,12 @@ export const use_GN_Store = defineStore('guess_numbers', () => {
 
   // 赢了
   const won = computed(
-    () => history.value.at(-1)?.A === 4 && history.value.length <= 8
+    () => history.value.at(-1)?.A === 4 && history.value.length <= 10
   );
 
   // 输了
   const lost = computed(
-    () => history.value.length === 8 && history.value.at(-1)?.A !== 4
+    () => history.value.length === 10 && history.value.at(-1)?.A !== 4
   );
 
   watchEffect(() => {
